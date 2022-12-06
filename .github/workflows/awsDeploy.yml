@@ -1,0 +1,40 @@
+name: github-action-practice
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: actions/checkout@v2
+        uses: actions/checkout@v2
+
+      - name: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: ap-northeast-2
+
+      - name: Build with Maven
+        run: |
+          mkdir deploy
+          cp codedeploy/appspec.yml deploy/appspec.yml
+          cp codedeploy/stop_server.sh deploy/stop_server.sh
+          cp codedeploy/start_server.sh deploy/start_server.sh
+
+          mvn package
+          cp target/api-practice-0.0.1-SNAPSHOT.jar deploy/api-practice-0.0.1-SNAPSHOT.jar
+          tar -zcvf api-practice.tar.gz -C deploy .
+
+        shell: bash
+
+      - name: s3 upload
+        run: |
+          aws s3 cp api-practice.tar.gz s3://deploy-practice/api-practice/api-practice.tar.gz
+
+      - name: Run codedeploy
+        run: |
+          aws deploy create-deployment --application-name deploy_practice --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name DEPLOY_api-practice --s3-location bucket=deploy-practice,bundleType=tgz,key=api-practice/api-practice.tar.gz
