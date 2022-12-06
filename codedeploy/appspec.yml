@@ -1,0 +1,8 @@
+version: 0.0
+os: linux
+
+hooks:
+  ApplicationStop:
+    - location: /stop_server.sh
+  ApplicationStart:
+    - location : /start_server.sh
