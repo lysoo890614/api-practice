@@ -6,5 +6,7 @@ files:
 hooks:
   ApplicationStop:
     - location: /stop_server.sh
+      timeout: 300
   ApplicationStart:
     - location : /start_server.sh
+      timeout: 300
