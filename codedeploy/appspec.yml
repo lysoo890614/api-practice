@@ -3,6 +3,14 @@ os: linux
 files:
   - source: /api-practice-0.0.1-SNAPSHOT.jar
     destination: /var/api-practice
+
+permissions:
+  - object: /var/api-practice
+    pattern: "api-practice-0.0.1-SNAPSHOT.jar"
+    owner: ec2-user
+    mode: 644
+    type:
+      - file
 hooks:
   ApplicationStop:
     - location: /stop_server.sh
