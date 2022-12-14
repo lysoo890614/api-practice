@@ -37,4 +37,4 @@ jobs:
 
       - name: Run codedeploy
         run: |
-          aws deploy create-deployment --application-name deploy_practice --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name test --s3-location bucket=deploy-practice,bundleType=tgz,key=api-practice/api-practice.tar.gz
+          aws deploy create-deployment --application-name deploy_practice --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name DEPLOY_api-practice --s3-location bucket=deploy-practice,bundleType=tgz,key=api-practice/api-practice.tar.gz
