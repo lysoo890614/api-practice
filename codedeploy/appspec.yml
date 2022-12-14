@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /api-practice-0.0.1-SNAPSHOT.jar
-    destination: /var/api-practice
+    destination: /home/ec2-user/api
 
 permissions:
-  - object: /var/api-practice
+  - object: /home/ec2-user/api
     owner: ec2-user
     mode: 644
     type:
